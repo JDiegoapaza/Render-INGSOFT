@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AdminPanel Pro — Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="dashboard-body">
+
+  <!-- Overlay for mobile sidebar -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ══════════════ SIDEBAR ══════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span class="sidebar-brand">AdminPanel <strong>Pro</strong></span>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Cerrar menú">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a href="#" class="nav-link active" data-module="home">
+            <i class="fa-solid fa-house"></i>
+            <span>Inicio</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-module="users">
+            <i class="fa-solid fa-users"></i>
+            <span>Usuarios</span>
+            <span class="nav-badge">12</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-module="reports">
+            <i class="fa-solid fa-chart-bar"></i>
+            <span>Reportes</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-module="products">
+            <i class="fa-solid fa-box-open"></i>
+            <span>Productos</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link" data-module="settings">
+            <i class="fa-solid fa-gear"></i>
+            <span>Configuración</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">A</div>
+        <div class="user-info">
+          <span class="user-name" id="sidebarUserName">Administrador</span>
+          <span class="user-role">Super Admin</span>
+        </div>
+      </div>
+      <button class="btn-logout" id="btnLogout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Cerrar sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══════════════ MAIN ══════════════ -->
+  <div class="main-wrapper">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="breadcrumb">
+          <span id="breadcrumbModule">Inicio</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbarDate"></div>
+
+        <div class="notif-btn" id="notifBtn">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notif-dot"></span>
+        </div>
+
+        <!-- Notifications dropdown -->
+        <div class="notif-dropdown hidden" id="notifDropdown">
+          <div class="notif-header">
+            <span>Notificaciones</span>
+            <button class="notif-clear" id="notifClear">Limpiar</button>
+          </div>
+          <ul class="notif-list">
+            <li class="notif-item unread">
+              <i class="fa-solid fa-user-plus notif-icon-blue"></i>
+              <div>
+                <p>Nuevo usuario registrado</p>
+                <small>Hace 5 minutos</small>
+              </div>
+            </li>
+            <li class="notif-item unread">
+              <i class="fa-solid fa-triangle-exclamation notif-icon-yellow"></i>
+              <div>
+                <p>Stock bajo: Laptop HP</p>
+                <small>Hace 1 hora</small>
+              </div>
+            </li>
+            <li class="notif-item">
+              <i class="fa-solid fa-file-chart-column notif-icon-green"></i>
+              <div>
+                <p>Reporte mensual generado</p>
+                <small>Ayer</small>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="topbar-profile" id="profileBtn">
+          <div class="profile-avatar">A</div>
+          <span class="profile-name" id="topbarUserName">admin</span>
+          <i class="fa-solid fa-chevron-down profile-chevron"></i>
+        </div>
+
+        <!-- Profile dropdown -->
+        <div class="profile-dropdown hidden" id="profileDropdown">
+          <a href="#" class="profile-item" data-module="settings">
+            <i class="fa-solid fa-user-gear"></i> Mi Perfil
+          </a>
+          <a href="#" class="profile-item">
+            <i class="fa-solid fa-key"></i> Cambiar Contraseña
+          </a>
+          <hr class="dropdown-divider" />
+          <a href="#" class="profile-item logout-item" id="profileLogout">
+            <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+          </a>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-content">
+
+      <!-- ══ MODULE: HOME ══ -->
+      <section class="module" id="mod-home">
+        <div class="module-header">
+          <h2 class="module-title">Panel de Control</h2>
+          <p class="module-desc">Resumen ejecutivo del sistema</p>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="stat-grid">
+          <div class="stat-card card-blue">
+            <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-body">
+              <span class="stat-value" data-target="1250">0</span>
+              <span class="stat-label">Usuarios Registrados</span>
+              <span class="stat-trend up"><i class="fa-solid fa-arrow-trend-up"></i> +12% este mes</span>
+            </div>
+          </div>
+          <div class="stat-card card-green">
+            <div class="stat-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+            <div class="stat-body">
+              <span class="stat-value" data-target="15800" data-prefix="$">$0</span>
+              <span class="stat-label">Ventas Mensuales</span>
+              <span class="stat-trend up"><i class="fa-solid fa-arrow-trend-up"></i> +8.4% vs mes anterior</span>
+            </div>
+          </div>
+          <div class="stat-card card-orange">
+            <div class="stat-icon"><i class="fa-solid fa-box-open"></i></div>
+            <div class="stat-body">
+              <span class="stat-value" data-target="350">0</span>
+              <span class="stat-label">Productos Activos</span>
+              <span class="stat-trend down"><i class="fa-solid fa-arrow-trend-down"></i> -3 esta semana</span>
+            </div>
+          </div>
+          <div class="stat-card card-purple">
+            <div class="stat-icon"><i class="fa-solid fa-file-chart-column"></i></div>
+            <div class="stat-body">
+              <span class="stat-value" data-target="85">0</span>
+              <span class="stat-label">Reportes Generados</span>
+              <span class="stat-trend up"><i class="fa-solid fa-arrow-trend-up"></i> +5 este mes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="chart-row">
+          <div class="chart-card wide">
+            <div class="chart-header">
+              <h3>Ventas Mensuales 2024</h3>
+              <span class="chart-badge">Anual</span>
+            </div>
+            <canvas id="salesChart" height="110"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Distribución de Usuarios</h3>
+            </div>
+            <canvas id="rolesChart" height="160"></canvas>
+          </div>
+        </div>
+
+        <!-- Recent activity -->
+        <div class="activity-card">
+          <div class="chart-header">
+            <h3>Actividad Reciente</h3>
+            <button class="btn-sm-outline">Ver todo</button>
+          </div>
+          <ul class="activity-list">
+            <li class="activity-item">
+              <div class="act-icon act-green"><i class="fa-solid fa-user-plus"></i></div>
+              <div class="act-body">
+                <p><strong>María González</strong> fue registrada como Operador</p>
+                <small>Hace 10 minutos</small>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="act-icon act-blue"><i class="fa-solid fa-file-arrow-up"></i></div>
+              <div class="act-body">
+                <p>Reporte de ventas <strong>Q4-2024</strong> generado</p>
+                <small>Hace 45 minutos</small>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="act-icon act-orange"><i class="fa-solid fa-boxes-stacked"></i></div>
+              <div class="act-body">
+                <p>Stock actualizado para <strong>Monitor LG 27"</strong></p>
+                <small>Hace 2 horas</small>
+              </div>
+            </li>
+            <li class="activity-item">
+              <div class="act-icon act-red"><i class="fa-solid fa-user-xmark"></i></div>
+              <div class="act-body">
+                <p>Usuario <strong>j.perez@email.com</strong> desactivado</p>
+                <small>Hace 3 horas</small>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ══ MODULE: USERS ══ -->
+      <section class="module hidden" id="mod-users">
+        <div class="module-header">
+          <h2 class="module-title">Gestión de Usuarios</h2>
+          <p class="module-desc">Administra los usuarios del sistema</p>
+        </div>
+
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="userSearch" placeholder="Buscar usuario..." />
+            </div>
+            <button class="btn-primary" id="btnAddUser">
+              <i class="fa-solid fa-user-plus"></i> Agregar Usuario
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table" id="usersTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="usersBody"></tbody>
+            </table>
+          </div>
+
+          <div class="table-footer">
+            <span id="userCount">Mostrando 0 usuarios</span>
+          </div>
+        </div>
+
+        <!-- Modal Add/Edit User -->
+        <div class="modal-overlay hidden" id="userModal">
+          <div class="modal-box">
+            <div class="modal-header">
+              <h3 id="modalUserTitle">Agregar Usuario</h3>
+              <button class="modal-close" id="closeUserModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Nombre Completo</label>
+                  <input type="text" id="mUserName" placeholder="Ej: Juan Pérez" />
+                </div>
+                <div class="form-group">
+                  <label>Correo Electrónico</label>
+                  <input type="email" id="mUserEmail" placeholder="Ej: juan@empresa.com" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Rol</label>
+                  <select id="mUserRole">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Operador">Operador</option>
+                    <option value="Supervisor">Supervisor</option>
+                    <option value="Consulta">Solo Consulta</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Estado</label>
+                  <select id="mUserStatus">
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                    <option value="Suspendido">Suspendido</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn-outline" id="cancelUserModal">Cancelar</button>
+              <button class="btn-primary" id="saveUserModal">Guardar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirm delete modal -->
+        <div class="modal-overlay hidden" id="deleteModal">
+          <div class="modal-box modal-sm">
+            <div class="modal-header">
+              <h3>Confirmar eliminación</h3>
+              <button class="modal-close" id="closeDeleteModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+              <p>¿Estás seguro de eliminar al usuario <strong id="deleteUserName"></strong>? Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn-outline" id="cancelDelete">Cancelar</button>
+              <button class="btn-danger" id="confirmDelete">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ MODULE: REPORTS ══ -->
+      <section class="module hidden" id="mod-reports">
+        <div class="module-header">
+          <h2 class="module-title">Reportes y Estadísticas</h2>
+          <p class="module-desc">Análisis y métricas del sistema</p>
+        </div>
+
+        <div class="reports-kpi-row">
+          <div class="kpi-card">
+            <i class="fa-solid fa-arrow-trend-up kpi-icon green"></i>
+            <div>
+              <span class="kpi-value">+24%</span>
+              <span class="kpi-label">Crecimiento Anual</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <i class="fa-solid fa-users-rectangle kpi-icon blue"></i>
+            <div>
+              <span class="kpi-value">94%</span>
+              <span class="kpi-label">Retención de Clientes</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <i class="fa-solid fa-receipt kpi-icon orange"></i>
+            <div>
+              <span class="kpi-value">$186k</span>
+              <span class="kpi-label">Ingresos Anuales</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <i class="fa-solid fa-star kpi-icon purple"></i>
+            <div>
+              <span class="kpi-value">4.8</span>
+              <span class="kpi-label">Satisfacción</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-card wide">
+            <div class="chart-header">
+              <h3>Ingresos vs Gastos (2024)</h3>
+              <span class="chart-badge">Comparativo</span>
+            </div>
+            <canvas id="incomeExpenseChart" height="120"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Ventas por Categoría</h3>
+            </div>
+            <canvas id="categoryChart" height="160"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Nuevos Usuarios por Mes</h3>
+            </div>
+            <canvas id="newUsersChart" height="160"></canvas>
+          </div>
+          <div class="chart-card wide">
+            <div class="chart-header">
+              <h3>Resumen Mensual — Junio 2024</h3>
+            </div>
+            <div class="monthly-summary">
+              <div class="summary-row">
+                <span>Ventas totales</span>
+                <div class="summary-bar-wrap">
+                  <div class="summary-bar" style="width:80%"></div>
+                </div>
+                <strong>$15,800</strong>
+              </div>
+              <div class="summary-row">
+                <span>Nuevos usuarios</span>
+                <div class="summary-bar-wrap">
+                  <div class="summary-bar bar-green" style="width:60%"></div>
+                </div>
+                <strong>142</strong>
+              </div>
+              <div class="summary-row">
+                <span>Productos vendidos</span>
+                <div class="summary-bar-wrap">
+                  <div class="summary-bar bar-orange" style="width:45%"></div>
+                </div>
+                <strong>287</strong>
+              </div>
+              <div class="summary-row">
+                <span>Tickets resueltos</span>
+                <div class="summary-bar-wrap">
+                  <div class="summary-bar bar-purple" style="width:90%"></div>
+                </div>
+                <strong>96%</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ MODULE: PRODUCTS ══ -->
+      <section class="module hidden" id="mod-products">
+        <div class="module-header">
+          <h2 class="module-title">Gestión de Productos</h2>
+          <p class="module-desc">Control de inventario y catálogo</p>
+        </div>
+
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="productSearch" placeholder="Buscar producto..." />
+            </div>
+            <div class="filter-group">
+              <select id="productCatFilter">
+                <option value="">Todas las categorías</option>
+                <option value="Electrónica">Electrónica</option>
+                <option value="Periféricos">Periféricos</option>
+                <option value="Software">Software</option>
+                <option value="Mobiliario">Mobiliario</option>
+              </select>
+              <select id="productStatusFilter">
+                <option value="">Todos los estados</option>
+                <option value="Disponible">Disponible</option>
+                <option value="Bajo Stock">Bajo Stock</option>
+                <option value="Agotado">Agotado</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table" id="productsTable">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Producto</th>
+                  <th>Categoría</th>
+                  <th>Stock</th>
+                  <th>Precio</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="productsBody"></tbody>
+            </table>
+          </div>
+
+          <div class="table-footer">
+            <span id="productCount">Mostrando 0 productos</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ MODULE: SETTINGS ══ -->
+      <section class="module hidden" id="mod-settings">
+        <div class="module-header">
+          <h2 class="module-title">Configuración del Sistema</h2>
+          <p class="module-desc">Preferencias y datos del sistema</p>
+        </div>
+
+        <div class="settings-grid">
+          <!-- System info -->
+          <div class="settings-card">
+            <h3 class="settings-section-title"><i class="fa-solid fa-server"></i> Datos del Sistema</h3>
+            <div class="settings-info-list">
+              <div class="info-row">
+                <span class="info-key">Nombre del sistema</span>
+                <span class="info-val">AdminPanel Pro</span>
+              </div>
+              <div class="info-row">
+                <span class="info-key">Versión</span>
+                <span class="info-val"><span class="badge-blue">v2.4.1</span></span>
+              </div>
+              <div class="info-row">
+                <span class="info-key">Última actualización</span>
+                <span class="info-val">15 Jun 2025</span>
+              </div>
+              <div class="info-row">
+                <span class="info-key">Licencia</span>
+                <span class="info-val">Empresarial</span>
+              </div>
+              <div class="info-row">
+                <span class="info-key">Entorno</span>
+                <span class="info-val"><span class="badge-green">Producción</span></span>
+              </div>
+              <div class="info-row">
+                <span class="info-key">Hosting</span>
+                <span class="info-val">Render Static Site</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- User profile -->
+          <div class="settings-card">
+            <h3 class="settings-section-title"><i class="fa-solid fa-user-circle"></i> Información del Usuario</h3>
+            <div class="profile-form">
+              <div class="profile-avatar-lg">A</div>
+              <div class="form-group">
+                <label>Nombre completo</label>
+                <input type="text" value="Administrador Principal" id="cfgName" />
+              </div>
+              <div class="form-group">
+                <label>Correo electrónico</label>
+                <input type="email" value="admin@adminpanel.com" id="cfgEmail" />
+              </div>
+              <div class="form-group">
+                <label>Cargo</label>
+                <input type="text" value="Super Administrador" id="cfgRole" />
+              </div>
+              <button class="btn-primary" id="saveProfile">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
+              </button>
+            </div>
+          </div>
+
+          <!-- Preferences -->
+          <div class="settings-card">
+            <h3 class="settings-section-title"><i class="fa-solid fa-sliders"></i> Preferencias</h3>
+            <div class="preferences-list">
+              <div class="pref-row">
+                <div>
+                  <p class="pref-title">Notificaciones por email</p>
+                  <small>Recibir alertas en tu correo</small>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="pref-row">
+                <div>
+                  <p class="pref-title">Modo oscuro</p>
+                  <small>Activar interfaz oscura</small>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="darkModeToggle" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="pref-row">
+                <div>
+                  <p class="pref-title">Alertas de stock bajo</p>
+                  <small>Notificar cuando el stock sea crítico</small>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="pref-row">
+                <div>
+                  <p class="pref-title">Reportes automáticos</p>
+                  <small>Generar reporte al fin de mes</small>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- System stats -->
+          <div class="settings-card">
+            <h3 class="settings-section-title"><i class="fa-solid fa-gauge-high"></i> Estado del Sistema</h3>
+            <div class="sys-stats">
+              <div class="sys-stat-row">
+                <span>Uso de almacenamiento</span>
+                <div class="sys-bar-wrap">
+                  <div class="sys-bar" style="width:42%">42%</div>
+                </div>
+              </div>
+              <div class="sys-stat-row">
+                <span>Carga del servidor</span>
+                <div class="sys-bar-wrap">
+                  <div class="sys-bar bar-green" style="width:28%">28%</div>
+                </div>
+              </div>
+              <div class="sys-stat-row">
+                <span>Ancho de banda</span>
+                <div class="sys-bar-wrap">
+                  <div class="sys-bar bar-orange" style="width:67%">67%</div>
+                </div>
+              </div>
+            </div>
+            <div class="sys-uptime">
+              <i class="fa-solid fa-circle-check uptime-icon"></i>
+              <span>Sistema operativo — Uptime: <strong>99.98%</strong></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
